@@ -1,4 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { Doc } from "../convex/_generated/dataModel";
+import { api } from "../convex/_generated/api";
+import { useMutation, useQuery } from "convex/react";
 import "./App.css";
 
 function App() {
@@ -20,16 +23,8 @@ function App() {
 
 export default App;
 
-type Page = {
-  content: string;
-  image: {
-    url: string;
-    prompt: string;
-  };
-};
-
 type BookData = {
-  pages: Page[];
+  pages: Doc<"chapters">[];
   addPage: () => void;
   updatePage: (pageNumber: number, content: string) => void;
   setEditState: (editState: EditState | null) => void;
@@ -44,25 +39,8 @@ type EditState = {
 const BookContext = React.createContext(null as null | BookData);
 
 const PictureBook = () => {
-  const [pages, setPages] = useState([
-    {
-      content: "We are at Page No:1",
-      image: null,
-    },
-    {
-      content: "We are at Page No:2",
-      image: null,
-    },
-  ]);
-  const updateChapter = async ({ pageNumber, content }) => {
-    let localPages = [...pages];
-    if (pageNumber === localPages.length) {
-      localPages.push({ content: content, image: null });
-    } else {
-      localPages[pageNumber].content = content;
-    }
-    setPages(localPages);
-  };
+  const pages = useQuery(api.chapters.getBookState);
+  const updateChapter = useMutation(api.chapters.updateChapterContents);
 
   const addPage = () => {
     (async () => {
@@ -205,7 +183,7 @@ const EditArea = ({ pageNumber }: { pageNumber: number }) => {
 
 const Illustration = ({ pageNumber }: { pageNumber: number }) => {
   const book = useContext(BookContext)!;
-  const ourEntry = book.pages[pageNumber];
+  const ourEntry = book.pages[pageNumber]!;
   if (ourEntry.image === null) {
     return (
       <>

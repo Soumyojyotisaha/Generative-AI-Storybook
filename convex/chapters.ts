@@ -1,6 +1,7 @@
-import { mutation } from "./_generated/server";
+import { mutation, query} from "./_generated/server";
+import {Doc} from "./_generated/dataModel";
 
-const updateChapterContents = mutation(async ({ db }, { pageNumber, content }: { pageNumber: number; content: string }) => {
+export const updateChapterContents = mutation(async ({ db }, { pageNumber, content }: { pageNumber: number; content: string }) => {
   await db.insert("chapters", {
     pageNumber,
     content,
@@ -8,4 +9,7 @@ const updateChapterContents = mutation(async ({ db }, { pageNumber, content }: {
   });
 });
 
-export default updateChapterContents;
+export const getBookState = query(async ({ db }): Promise<Doc<"chapters">[]> => {
+  const pages = await db.query("chapters").withIndex("by_pageNumber").collect();
+  return pages;
+});
