@@ -18,7 +18,7 @@ The Generative-AI-Storybook project focuses on generating descriptions and image
 
 ## Database link:
 ```bash
-[https://supabase.com/dashboard/project/owjzzdbdtbxmzjfuvktr/editor/29257](https://dashboard.convex.dev/t/soumyojyotisaha/ai-generative-storybook/outgoing-peacock-788/data?table=chapters)
+https://supabase.com/dashboard/project/owjzzdbdtbxmzjfuvktr/editor/29257](https://dashboard.convex.dev/t/soumyojyotisaha/ai-generative-storybook/outgoing-peacock-788/data?table=chapters)
 ```
 ![Image](https://github.com/Soumyojyotisaha/Generative-AI-Storybook/blob/main/Screenshot%202023-12-26%20182146.png)
 
