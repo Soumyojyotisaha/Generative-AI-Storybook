@@ -1,14 +1,19 @@
+import { version } from "os";
+import { api } from "./_generated/api";
 import { Doc } from "./_generated/dataModel";
-import { DatabaseWriter, mutation, query } from "./_generated/server";
-async function bumpVersion(db:DatabaseWriter){
+import { DatabaseWriter, internalQuery, mutation, query } from "./_generated/server";
+async function bumpVersion(db:DatabaseWriter):Promise<number>
+{
   const versionDoc=await db.query("version").first()!;
+  const newVersion=versionDoc!.version +1;
   await db.patch(versionDoc!._id,{
-    version:versionDoc!.version +1,
-  })
+    version:newVersion,
+  });
+  return newVersion;
 }
 export const updateChapterContents = mutation(
   async (
-    { db },
+    { db,scheduler },
     { pageNumber, content }: { pageNumber: number; content: string }
   ) => {
     let existing = await db
@@ -26,9 +31,14 @@ export const updateChapterContents = mutation(
         image: null,
       });
     }
-    await bumpVersion(db);
-    }
-);
+  const version= await bumpVersion(db);
+  const pages=await db.query("chapters").collect();
+  for (let i=0;i<pages.length;i++)
+  {
+    await scheduler.runAfter(5000, api.ai.populatePageimage, { pageNumber: i,version});
+  }
+
+  });
 
 export const getBookState = query(
   async ({ db }): Promise<Doc<"chapters">[]> => {
@@ -37,5 +47,15 @@ export const getBookState = query(
       .withIndex("by_pageNumber")
       .collect();
     return pages;
-  }
-);
+  });
+
+  export const getBookStateWithVersion = internalQuery({
+    handler: async (ctx): Promise<[number, Doc<"chapters">[]]> => {
+      const pages = await ctx.db
+        .query("chapters")
+        .withIndex("by_pageNumber")
+        .collect();
+      const versionDoc = await ctx.db.query("version").first();
+      return [versionDoc?.version ?? 0, pages];
+    },
+  });
