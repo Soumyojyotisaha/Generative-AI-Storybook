@@ -7,7 +7,7 @@ The project involves generating descriptions and images for pages in a children'
 *Strategic design and iterative processes for prompts
 *Employing model chaining to enhance the precision of prompts and the quality of generated images
 
-##Technologies:
+#Technologies:
 
 1.Convex (https://convex.dev) - Backend application platform
 2.LangChain.js (https://github.com/hwchase17/langchainjs) - Model chaining and composition
@@ -18,44 +18,42 @@ The project involves generating descriptions and images for pages in a children'
 7.DaisyUI (https://daisyui.com/) - Tailwind-based component library
 8.Vite (https://vitejs.dev/) - Frontend development environment
 
-##Key Components:
+#Key Components:
 
-##LangChain Library:
+#LangChain Library:
 The project uses the LangChain library, which provides abstractions for working with language models (LLMs), prompts, and chains.
 
-##Actions:
+#Actions:
 The populatePageImage action is a main entry point triggered with specific arguments (pageNumber and version). This action fetches the current book state and, if not outdated, generates and updates images and descriptions for the specified page.
 
-##Chains:
+#Chains:
 The code defines two main chains: getImageChain and getSummarizeChain.
 getImageChain is responsible for generating images based on a provided description. It uses the Replicate service and a specific image model (ai-forever/kandinsky-2).
 getSummarizeChain is designed to create a summary description of a scene in the children's book using the ChatOpenAI model. It handles both system and human messages in the prompt.
 
-##Prompt Templates:
+#Prompt Templates:
 The code defines prompt templates for guiding the input and output of the language models.
 For image generation, a prompt is constructed in the style of a children's book illustration based on a given page description.
 For summarization, a conversation-style prompt is created, instructing the user to provide a brief description of a scene on a specific page.
 
-##Integration with External Services:
+#Integration with External Services:
 The project integrates with external services like Replicate (for image generation) and OpenAI (for text summarization).
 
-##Data Model Interaction:
+#Data Model Interaction:
 The populatePageImage action interacts with the data model (internal.chapters.updateChapterImage) to store the generated image URL and description for a specific page.
 
-##Functioning:
-
-##populatePageImage Function:
+#Functioning:
 Takes page number and version as arguments.
 Checks if the book version is outdated; if so, exits.
 Fetches the book state and proceeds only if the content of the specified page is not empty.
 Calls getPageImage to generate a page description and image URL.
 Updates the data model with the generated information.
-getPageImage Function:
 
+#getPageImage Function:
 Creates chains for summarization and image generation.
 Calls these chains with book paragraphs and the number of pages.
 Returns the generated page description and image URL.
-getImageChain and getSummarizeChain Functions:
 
+#getImageChain and getSummarizeChain Functions:
 Construct prompt templates for image generation and summarization.
 Initialize LLM chains with prompt templates, models, and output keys.
