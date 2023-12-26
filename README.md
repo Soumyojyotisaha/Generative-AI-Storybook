@@ -14,6 +14,11 @@ The Generative-AI-Storybook project focuses on generating descriptions and image
 
 - **Model Chaining for Precision**: Employ model chaining to enhance the precision of prompts and the overall quality of generated images.
 
+## Database link:
+```bash
+[https://supabase.com/dashboard/project/owjzzdbdtbxmzjfuvktr/editor/29257](https://dashboard.convex.dev/t/soumyojyotisaha/ai-generative-storybook/outgoing-peacock-788/data?table=chapters)
+```
+
 ## Technologies:
 
 1. [Convex](https://convex.dev) - Backend application platform
@@ -69,5 +74,25 @@ The `populatePageImage` action interacts with the data model (`internal.chapters
 
 1. Construct prompt templates for image generation and summarization.
 2. Initialize LLM chains with prompt templates, models, and output keys.
+
+## Getting Started
+
+1. **Clone the Repository:**
+   ```bash
+   https://github.com/Soumyojyotisaha/Generative-AI-Storybook.git
+   cd ai-book
+   npm install
+   npm run dev
+   npx convex dev
+
+2.**Usage:**
+The project involves generating descriptions and images for pages in a children's book.
+
+3.**Contribution:**
+Feel free to contribute to the project by submitting issues or pull requests. For major changes, please open an issue to discuss the proposed changes.
+
+4.**License:**
+This project is licensed under the MIT License - see the LICENSE file for details.
+Replace the placeholders with your actual project details, and feel free to enhance the README based on your project's specific features and requirements.
 
 ![Image]()
