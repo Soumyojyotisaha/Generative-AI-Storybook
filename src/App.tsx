@@ -209,7 +209,7 @@ const Illustration = ({ pageNumber }: { pageNumber: number }) => {
 };
 
 const Regenerate = ({ pageNumber }) => {
-  //  const regenerate = useMutation("chapters:regenerateImage");
+  const backendRegenerate = useMutation(api.chapters.regenerateImageForPage);
   const regenerate = ({ pageNumber }) => alert("not implemented");
   return (
     <button

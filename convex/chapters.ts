@@ -1,7 +1,7 @@
-import { version } from "os";
 import { api } from "./_generated/api";
 import { Doc } from "./_generated/dataModel";
-import { DatabaseWriter, internalQuery, mutation, query } from "./_generated/server";
+import { DatabaseWriter, internalMutation, internalQuery, mutation, query } from "./_generated/server";
+import { v } from "convex/values";
 async function bumpVersion(db:DatabaseWriter):Promise<number>
 {
   const versionDoc=await db.query("version").first()!;
@@ -23,6 +23,7 @@ export const updateChapterContents = mutation(
     if (existing !== null) {
       await db.patch(existing._id, {
         content,
+        image:null,
       });
     } else {
       await db.insert("chapters", {
@@ -35,7 +36,7 @@ export const updateChapterContents = mutation(
   const pages=await db.query("chapters").collect();
   for (let i=0;i<pages.length;i++)
   {
-    await scheduler.runAfter(5000, api.ai.populatePageimage, { pageNumber: i,version});
+    await scheduler.runAfter(5000, api.ai.populatePageImage, { pageNumber: i,version});
   }
 
   });
@@ -59,3 +60,48 @@ export const getBookState = query(
       return [versionDoc?.version ?? 0, pages];
     },
   });
+
+  export const updateChapterImage= internalMutation(async ({db},
+    {pageNumber,version,imageUrl,prompt}:
+    { pageNumber:number,
+      version:number,
+      imageUrl:string,
+      prompt:string} )=>
+      {
+const versionDoc=await db.query("version").first();
+
+if(version === versionDoc!.version)
+{
+  const existing=await db.query("chapters")
+  .withIndex("by_pageNumber",(q)=>q.eq("pageNumber",pageNumber)).first();
+  await db.patch(existing!._id,
+    {
+      image:{
+        url:imageUrl,
+        prompt
+      }
+    });
+}else{
+  console.log("Not updating DB,Ai action was for outdated version!")
+}
+});
+export const regenerateImageForPage = mutation({
+  args: { pageNumber: v.number() },
+  handler: async (ctx, { pageNumber }) => {
+    const existing = await ctx.db
+      .query("chapters")
+      .withIndex("by_pageNumber", q => q.eq("pageNumber", pageNumber))
+      .first();
+    if (existing !== null) {
+      await ctx.db.patch(existing._id, {
+        image: null,
+      });
+      const versionDoc = await ctx.db.query("version").first()!;
+      const version = versionDoc!.version;
+      await ctx.scheduler.runAfter(0, api.ai.populatePageImage, {
+        pageNumber,
+        version,
+      });
+    }
+  },
+});
