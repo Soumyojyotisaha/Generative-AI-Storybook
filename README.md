@@ -2,6 +2,8 @@
 
 The Generative-AI-Storybook project focuses on generating descriptions and images for pages in a children's book. Leveraging the LangChain library for natural language processing, the project seamlessly integrates with external services such as OpenAI and Replicate. Its primary functionality involves populating page images based on the book's content, with the generated images and descriptions being updated in a data model.
 
+![Image](https://github.com/Soumyojyotisaha/Generative-AI-Storybook/blob/main/Screenshot%202023-12-26%20173557.png)
+
 ## Transformative Features:
 
 - **Full-Stack Transformation**: Convert your React application into a comprehensive full-stack solution.
@@ -18,6 +20,7 @@ The Generative-AI-Storybook project focuses on generating descriptions and image
 ```bash
 [https://supabase.com/dashboard/project/owjzzdbdtbxmzjfuvktr/editor/29257](https://dashboard.convex.dev/t/soumyojyotisaha/ai-generative-storybook/outgoing-peacock-788/data?table=chapters)
 ```
+![Image](https://github.com/Soumyojyotisaha/Generative-AI-Storybook/blob/main/Screenshot%202023-12-26%20182146.png)
 
 ## Technologies:
 
@@ -95,4 +98,4 @@ Feel free to contribute to the project by submitting issues or pull requests. Fo
 This project is licensed under the MIT License - see the LICENSE file for details.
 Replace the placeholders with your actual project details, and feel free to enhance the README based on your project's specific features and requirements.
 
-![Image]()
+
